@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=48", "setuptools_scm[toml]>=6.3.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "find-surf-spots"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+dynamic = ["version"]
+dependencies = [
+  "any-agent",
+  "loguru",
+  "pydantic",
+  "requests"
+]
+
+[dependency-groups]
+
+dev = [
+  { include-group = "lint" },
+  { include-group = "tests" },
+]
+
+lint = [
+  "pre-commit==4.2.0",
+]
+
+tests = [
+  "pytest>=8,<9",
+  "pytest-sugar>=0.9.6"
+]
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*"]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools_scm]
