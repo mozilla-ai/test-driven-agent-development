@@ -17,5 +17,5 @@ Feel free to use a different approach/tools.
 - Install the dependencies
 
     ```bash
-    uv sync
+    uv sync --dev
     ```

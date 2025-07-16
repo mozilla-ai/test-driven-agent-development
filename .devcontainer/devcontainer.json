@@ -1,0 +1,6 @@
+{
+    "name": "Test Driven Agent Development",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {},
+    "postCreateCommand": "bash .devcontainer/setup.sh"
+}
