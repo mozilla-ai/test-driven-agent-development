@@ -31,7 +31,7 @@ TOOLS = [
 Their existing unit tests remain useful in this context.
 
 We can also adapt the existing [`test_workflow.py`](../tests/test_workflow.py) to
-have an end-to-end `test_agent.py`:
+have an end-to-end [`test_agent.py`](../tests/test_agent.py):
 
 ```python
 from datetime import datetime
@@ -72,72 +72,16 @@ Luckily, the returned `agent_trace` can be used inside tests exactly for this pu
 We can apply those patterns in our test.
 
 To start simple, we can check if the `get_surfing_spots` tool was used
-to get the answer:
+to get the answer.
 
-```python
-from any_agent.tracing.attributes import GenAI
-
-
-def assert_tool_was_used(agent_trace: AgentTrace, tool_name: str):
-    assert any(
-        (
-            span.attributes.get(GenAI.TOOL_NAME) == tool_name
-            and span.status.status_code.value == "ok"
-        )
-        for span in agent_trace.spans
-        if span.is_tool_execution()
-    )
-
-...
-
-def test_find_surf_spots_agent():
-    agent_trace = find_surf_spots_agent("Vigo", datetime.now().isoformat())
-
-    ...
-
-    assert_tool_was_used(agent_trace, "get_surfing_spots")
-```
+-> Check [`test_agent.py`](../tests/test_agent.py)
 
 ## Agent baseline
 
 Having our initial test ready and failing, we can go ahead an implement
-a first version of the agent:
+a first version of the agent.
 
-```python
-def find_surf_spots_agent(
-    location: str, date: datetime, max_driving_hours: int = 1
-) -> AgentTrace:
-    user_prompt = (
-        f"Find surf spots around {location} "
-        f"for the given date {date} "
-        f"within a maximum distance of {max_driving_hours} driving hours."
-    )
-
-    MODEL_ID = "gemini/gemini-2.5-pro"
-    INSTRUCTIONS = "Use the tools to find an answer"
-    TOOLS = [
-        driving_hours_to_meters,
-        get_area_lat_lon,
-        get_surfing_spots,
-        get_wave_forecast,
-        get_wind_forecast,
-        search_tavily,
-        visit_webpage
-    ]
-
-    agent = AnyAgent.create(
-        "tinyagent",
-        AgentConfig(
-            model_id=MODEL_ID,
-            instructions=INSTRUCTIONS,
-            tools=TOOLS,
-            # Using an output type also helps guiding the agent behavior
-            output_type=SurfSpots,
-        ),
-    )
-
-    return agent.run(user_prompt)
-```
+-> Check [`agent.py`](../src/find_surf_spots/agent.py).
 
 And run the test to see if this basic agent already behaves as expected:
 

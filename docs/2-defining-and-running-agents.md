@@ -7,7 +7,7 @@ implementing a simple agent as a baseline.
 
 Agents are just an LLM with access to tools running in a loop:
 
-```
+```python
 history = [instructions, user_prompt]
 
 while True:
@@ -32,11 +32,11 @@ to define and run agents using different agent frameworks under the hood:
 
 ```python
 from any_agent import AgentConfig, AnyAgent
-from any_agent.tools import search_tavily
+from any_agent.tools import search_tavily, visit_webpage
 
-MODEL_ID = "gemini/gemini-2.5-pro"
+MODEL_ID = "gemini/gemini-2.5-flash"
 INSTRUCTIONS = "Use the tools to find an answer"
-TOOLS = [search_tavily]
+TOOLS = [search_tavily, visit_webpage]
 
 agent = AnyAgent.create(
     "tinyagent",
@@ -68,7 +68,7 @@ Apart from being visible in the output console and available in any OpenTelemetr
 
 ```
 print(agent_trace.final_output)
-print(agent_trace.spans)
+print(agent_trace.spans[1])
 ```
 
 We can use the provided helpers to filter the spans and retrieve relevant information

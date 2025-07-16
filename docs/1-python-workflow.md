@@ -16,23 +16,25 @@ we plan to use LLMs, for example:
 The example use case we are going to use to guide the workshop is meant
 to recommend surf spots around a given location and time.
 
-Check the [`workflow.py`](../src/find_surf_spots/workflow.py).
+-> Check [`workflow.py`](../src/find_surf_spots/workflow.py).
 
-We can run the script multiple times and verify that, as expected, the steps are executed
-in the right order and the outputs are consistent:
+-> Check [`openmeteo.py`](../src/find_surf_spots/tools/openmeteo.py).
 
-```console
-python src/find_surf_spots/workflow.py "Salvaterra de Miño" $(date --iso-8601)
-```
-
-We can also run the test suite, with a mix of unit tests (for the tools) and a simple
-integration test (for the entire workflow):
+We can run the test suite, with a mix of unit tests (for the tools):
 
 ```console
-pytest -v tests
+pytest --disable-warnings -v -s tests/tools
 ```
 
-Check the [`test_workflow.py`](../tests/test_workflow.py).
+-> Check [`test_openmeteo.py`](../tests/tools/test_openmeteo.py).
+
+And a simple integration test for the entire workflow:
+
+```console
+pytest --disable-warnings -v -s tests/test_workflow.py
+```
+
+-> Check [`test_workflow.py`](../tests/test_workflow.py).
 
 ## Deciding on using agents
 
